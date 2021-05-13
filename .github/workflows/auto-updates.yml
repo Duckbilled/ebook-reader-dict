@@ -45,7 +45,9 @@ jobs:
           - es
           - pt
           - sv
+          - it
           - ca
+          - no
 
     steps:
 

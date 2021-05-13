@@ -65,7 +65,6 @@ def find_section_definitions(
 ) -> List[Definitions]:
     """Find definitions from the given *section*, with eventual sub-definitions."""
     definitions: List[Definitions] = []
-
     # do not look for definitions in french verb form section
     if locale == "fr" and section.title.strip().startswith("{{S|verbe|fr|flexion"):
         return definitions
@@ -122,13 +121,18 @@ def find_section_definitions(
     return definitions
 
 
-def find_etymology(word: str, locale: str, parsed_section: wtp.Section) -> str:
+def find_etymology(
+    word: str, locale: str, parsed_section: wtp.Section
+) -> List[Definitions]:
     """Find the etymology."""
-
+    definitions: List[Definitions] = []
     etyl: str
 
-    if locale == "ca":
-        return process_templates(word, clean(parsed_section.contents), locale)
+    if locale in ("ca", "no"):
+        definitions.append(
+            process_templates(word, clean(parsed_section.contents), locale)
+        )
+        return definitions
 
     elif locale == "en":
         items = [
@@ -139,11 +143,19 @@ def find_etymology(word: str, locale: str, parsed_section: wtp.Section) -> str:
         for item in items:
             etyl = process_templates(word, clean(item), locale)
             if etyl:
-                return etyl
+                definitions.append(etyl)
+        return definitions
 
-    elif locale == "es":
-        etyl = parsed_section.get_lists(pattern=("",))[0].items[1]
-        return process_templates(word, clean(etyl), locale)
+    elif locale in ("es", "it"):
+        items = [
+            item.strip()
+            for item in parsed_section.get_lists(pattern=("",))[0].items[1:]
+        ]
+        for item in items:
+            etyl = process_templates(word, clean(item), locale)
+            if etyl:
+                definitions.append(etyl)
+        return definitions
 
     elif locale == "pt":
         section_title = parsed_section.title.strip()
@@ -158,21 +170,27 @@ def find_etymology(word: str, locale: str, parsed_section: wtp.Section) -> str:
                 etyl = parsed_section.get_lists(pattern=("^:",))[0].items[0]
             except IndexError:
                 etyl = parsed_section.get_lists(pattern=("",))[0].items[1]
-        return process_templates(word, clean(etyl), locale)
+        definitions.append(process_templates(word, clean(etyl), locale))
+        return definitions
 
-    etymologies = chain.from_iterable(
-        section.items for section in parsed_section.get_lists()
-    )
-    for etymology in etymologies:
-        if any(
-            ignore_me in etymology.lower()
-            for ignore_me in definitions_to_ignore[locale]
-        ):
-            continue
-        etyl = process_templates(word, clean(etymology), locale)
-        if etyl:
-            return etyl
-    return ""
+    for section in parsed_section.get_lists():
+        for idx, section_item in enumerate(section.items):
+            if any(
+                ignore_me in section_item.lower()
+                for ignore_me in definitions_to_ignore[locale]
+            ):
+                continue
+            definitions.append(process_templates(word, clean(section_item), locale))
+            subdefinitions: List[SubDefinitions] = []
+            for sublist in section.sublists(i=idx):
+                for idx2, subcode in enumerate(sublist.items):
+                    subdefinitions.append(
+                        process_templates(word, clean(subcode), locale)
+                    )
+            if subdefinitions:
+                definitions.append(tuple(subdefinitions))
+
+    return definitions
 
 
 def find_genre(code: str, pattern: Pattern[str]) -> str:
@@ -186,8 +204,10 @@ def find_genre(code: str, pattern: Pattern[str]) -> str:
     return groups[0] or ""
 
 
-def find_pronunciations(code: str, pattern: Pattern[str]) -> List[str]:
+def find_pronunciations(code: str, pattern: Optional[Pattern[str]]) -> List[str]:
     """Find pronunciations."""
+    if not pattern:
+        return []
     match = pattern.search(code)
     if not match:
         return []
@@ -225,7 +245,10 @@ def find_all_sections(code: str, locale: str) -> List[wtp.Section]:
 
     # Filter on interesting sections
     for section in parsed.get_sections(include_subsections=True, level=level):
-        title = section.title.replace(" ", "").lower()
+        title = section.title
+        if not title:  # Check needed for IT
+            continue
+        title = title.replace(" ", "").lower().strip()
         if title not in head_sections[locale]:
             continue
 
@@ -254,10 +277,20 @@ def parse_word(word: str, code: str, locale: str, force: bool = False) -> Word:
     It is disabled by default to speed-up the overall process, but enabled when
     called from get_and_parse_word().
     """
+    code = re.sub(r"(<!--.*?-->)", "", code, flags=re.DOTALL)
+
+    if locale == "it":
+        # {{-avv-|it}} -> === {{avv}} ===
+        code = re.sub(
+            r"^\{\{-(.+)-\|it?\}\}", r"=== {{\1}} ===", code, flags=re.MULTILINE
+        )
+        # {{-avv-}} -> === {{avv}} ===
+        code = re.sub(r"^\{\{-(.+)-\}\}", r"=== {{\1}} ===", code, flags=re.MULTILINE)
+
     parsed_sections = find_sections(code, locale)
     prons = []
     nature = ""
-    etymology = ""
+    etymology = []
 
     # Etymology
     sections = etyl_section[locale]
@@ -271,7 +304,7 @@ def parse_word(word: str, code: str, locale: str, force: bool = False) -> Word:
     definitions = find_definitions(word, parsed_sections, locale)
 
     if definitions or force:
-        prons = find_pronunciations(code, pronunciation[locale])
+        prons = find_pronunciations(code, pronunciation.get(locale))
         nature = find_genre(code, genre[locale])
 
     # find if variant and delete unwanted definitions

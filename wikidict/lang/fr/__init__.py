@@ -173,6 +173,7 @@ templates_ignored = (
     ",",
     "?",
     "Article",
+    "article",
     "Accord des couleurs",
     "ancre",
     "créer-séparément",
@@ -535,6 +536,8 @@ templates_multi = {
     # {{info lex|boulangerie}}
     # {{info lex|équitation|sport}}
     "info lex": "term(', '.join(capitalize(part) for part in parts[1:]))",
+    # {{ISBN|978-1-23-456789-7|2-876-54301-X}}
+    "ISBN": "'ISBN ' + concat(parts[1:], sep=', ', last_sep=' et ')",
     # {{lexique|philosophie|fr}}
     # {{lexique|philosophie|sport|fr}}
     "lexique": "term(', '.join(capitalize(p) for p in [a for a in parts if '=' not in a][1:-1]))",
@@ -731,6 +734,7 @@ def last_template_handler(
     from .langs import langs
     from ..defaults import last_template_handler as default
     from ...user_functions import (
+        chinese,
         extract_keywords_from,
         italic,
         person,
@@ -784,6 +788,9 @@ def last_template_handler(
         return f'<span style="line-height: 0px;"><span style="font-size:larger">{arabiser(parts[0])}</span></span> <small>({parts[0]})</small>'  # noqa
     if tpl == "ar-ab":
         return f'<span style="line-height: 0px;"><span style="font-size:larger">{arabiser(parts[0])}</span></span>'
+
+    if tpl in ("zh-l", "zh-m"):
+        return chinese(parts, data, laquo="«&nbsp;", raquo="&nbsp;»")
 
     # This is a country in the current locale
     if tpl in langs:

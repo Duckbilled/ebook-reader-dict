@@ -11,6 +11,10 @@ def test_word_of_the_day():
     assert check_word.main("fr", "") == 0
 
 
+def test_etymology_list():
+    assert check_word.main("fr", "bath") == 0
+
+
 def test_sublist():
     assert check_word.main("fr", "éperon") == 0
 
@@ -70,6 +74,17 @@ def test_filter_es():
 
     with patch.object(check_word, "filter_html", new=new_filter_html):
         assert check_word.main("es", "cartel") == 0
+
+
+def test_filter_es_2():
+    orig = check_word.filter_html
+
+    def new_filter_html(html: str, locale: str) -> str:
+        html += "<dl><dt>2 Coloquial</dt></dl>"
+        return orig(html, locale)
+
+    with patch.object(check_word, "filter_html", new=new_filter_html):
+        assert check_word.main("es", "buena") == 0
 
 
 def test_filter_fr_refnec():

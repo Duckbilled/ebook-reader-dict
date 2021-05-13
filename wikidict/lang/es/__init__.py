@@ -1,5 +1,7 @@
 """Spanish language."""
-from typing import Tuple
+from typing import List, Tuple
+
+from .campos_semanticos import campos_semanticos
 
 # Regex to find the pronunciation
 pronunciation = r"fone=([^}\|\s]+)"
@@ -7,11 +9,12 @@ pronunciation = r"fone=([^}\|\s]+)"
 # Float number separator
 float_separator = ","
 
-# Thousads separator
-thousands_separator = "."
+# Thousands separator
+thousands_separator = " "
 
 # Markers for sections that contain interesting text to analyse.
 head_sections = ("{{lengua|es}}",)
+section_sublevels = (4, 3)
 etyl_section = ["Etimología"]
 sections = (
     "Abreviaturas",
@@ -50,116 +53,29 @@ definitions_to_ignore = (
 )
 
 # Templates to ignore: the text will be deleted.
-templates_ignored = ("cita requerida", "citarequerida", "préstamo", "sin referencias")
+templates_ignored = (
+    "catafijo",
+    "cita requerida",
+    "citarequerida",
+    "clear",
+    "marcar sin referencias",
+    "picdic",
+    "picdiclabel",
+    "préstamo",
+    "pron-graf",
+    "sin referencias",
+)
 
 # Templates that will be completed/replaced using italic style.
 templates_italic = {
-    "algas": "Ficología",
-    "alimentos": "Gastronomía",
-    "anfibios": "Zoología",
-    "anélidos": "Zoología",
-    "animales": "Zoología",
-    "artrópodos": "Zoología",
-    "arácnidos": "Zootomía",
-    "artes": "Arte",
-    "árbol": "Botánica",
-    "árboles": "Botánica",
-    "arbustos": "Botánica",
-    "aves": "Zoología",
-    "baloncestos": "Baloncesto",
-    "bebida": "Gastronomía",
-    "bebidas": "Gastronomía",
-    "cactos": "Botánica",
-    "caza": "Cinegética",
-    "Cinematografía": "Cine",
-    "ciudades": "Geografía",
-    "cereales": "Botánica",
-    "condimentos": "Gastronomía",
-    "constelaciones": "Astronomía",
-    "continentes": "Geografía",
-    "crustáceo": "Zoología",
-    "crustáceos": "Zoología",
-    "cubertería": "Utensilios",
-    "deportes": "Deporte",
-    "dinosaurios": "Paleontología y Zoología",
-    "dioses": "Religión",
-    "elementos químico": "Química",
-    "elementos químicos": "Química",
-    "enfermedad": "Medicina",
-    "enfermedades": "Medicina",
-    "equinodermos": "Zoología",
-    "especias": "Gastronomía",
-    "estaciones": "Cronología, Meteorología",
-    "Farmacia": "Farmacología",
-    "fármacos": "Farmacología",
-    "festividades": "Festividad",
-    "flores": "Botánica",
-    "ficción": "Ficción fantástica",
-    "fonética": "Lingüística",
-    "fraccionarios": "Fraccionario",
-    "frutas": "Botánica, Gastronomía",
-    "frutos": "Botánica, frutos",
-    "gentilicios": "Gentilicio",
-    "glotónimo": "Lingüística",
-    "glotónimos": "Lingüística",
-    "Hípica": "Equitación",
-    "hierbas": "Botánica",
-    "hongos": "Micología",
-    "huesos": "Anatomía",
-    "insectos": "Zoología",
-    "instrumentos musicales": "Música [instrumentos]",
-    "invertebrados": "Zoología",
-    "islas": "Geografía",
-    "juegos": "Juego",
-    "lagos": "Geografía",
-    "lenguas": "Lingüística",
-    "lgbt": "LGBT",
-    "lunf": "Lunfardismo",
-    "mamíferos": "Zoología",
-    "mares": "Geografía",
-    "Marina": "Náutica",
-    "Matemática": "Matemáticas",
-    "meses": "Cronología",
-    "microbiología": "Biología",
-    "minerales": "Mineralogía",
-    "moluscos": "Zoología",
-    "moneda": "Economía y Numismática",
-    "monedas": "Economía y Numismática",
-    "Montería": "Cinegética",
-    "muebles": "Mobiliario",
-    "nemátodos": "Zoología",
-    "números": "Matemáticas",
-    "países": "Geografía",
-    "peces": "Ictiología",
-    "perros": "Cinología",
-    "pesos y medidas": "Metrología",
-    "planetas": "Astronomía",
-    "planta": "Botánica",
-    "plantas": "Botánica",
-    "platelmintos": "Zoología",
-    "platos": "Gastronomía",
-    "prendas": "Vestimenta",
-    "poblaciones": "Geografía",
-    "profesiones": "Profesión",
-    "provincias": "Geografía",
-    "recetas": "Gastronomía",
-    "regiones": "Geografía",
-    "reptiles": "Zoología",
-    "restaurantes": "Comercio",
-    "ropa": "Vestimenta",
+    **campos_semanticos,
+    "germanía": "jergal",
+    "jergal": "jergal",
+    "jerga": "jergal",
+    "lunf": "lunfardismo",
     "rpl": "Río de la Plata",
-    "rur": "Rural",
-    "sentimientos": "Humanidades",
-    "telas": "Industria",
-    "Teologia": "Religión",
-    "textiles": "Industria",
-    "tiempo": "Medición del tiempo",
-    "topónimo": "Geografía",
-    "topónimos": "Geografía",
-    "tribus urbanas": "Sociedad",
-    "vehículos": "Transporte",
-    "verduras": "Gastronomía, Botánica",
-    "virtudes": "Humanidades",
+    "rur": "rural",
+    "slang": "jergal",
 }
 
 # Templates more complex to manage.
@@ -172,6 +88,8 @@ templates_multi = {
     "contracción": "f\"{italic('Contracción de')} {parts[1]} {italic('y')} {parts[2]}\"",
     # {{coord|04|39|N|74|03|O|type:country}}
     "coord": "coord(parts[1:])",
+    # {{datación|xv}}
+    "datación": 'f"Atestiguado desde el siglo {parts[-1]}"',
     #  {{diminutivo|historia}}
     "diminutivo": "f\"{italic('Diminutivo de')} {parts[-1]}\"",
     # {{etimología2|de [[hocicar]]}}
@@ -181,24 +99,11 @@ templates_multi = {
     # {{formatnum:22905}}
     "formatnum": f'number(parts[1], "{float_separator}", "{thousands_separator}")',
     # {{gentilicio|Cataluña}}
-    "gentilicio": 'f"Originario, relativo a, o propio de {parts[1]}"',
+    "gentilicio": '"Originario, relativo a, o propio " + ("del" if any("contracción" in part for part in parts) else "de") + f" {parts[1]}"',  # noqa
     # {{gentilicio1|Alemania}}
-    "gentilicio1": 'f"Originario, relativo a, o propio de {parts[1]}"',
-    # {{gentilicio2|Alemania}}
-    "gentilicio2": 'f"Persona originaria de {parts[1]}"',
-    # "gentilicio3"
-    # {{grafía|psicológico}}
-    "grafía": "f\"{italic('Grafía alternativa de')} {strong(parts[1])}\"",
-    # {{grafía informal|al tiro}}
-    "grafía informal": "f\"{italic('Grafía informal de')} {parts[1]}\"",
-    # {{grafía obsoleta|asta}}
-    "grafía obsoleta": "f\"{italic('Grafía obsoleta de')} {parts[1]}\"",
-    # {{grafía rara|exudar}}
-    "grafía rara": "f\"{italic('Grafía poco usada de')} {parts[1]}\"",
+    "gentilicio1": '"Originario, relativo a, o propio " + ("del" if any("contracción" in part for part in parts) else "de") + f" {parts[1]}"',  # noqa
     # {{impropia|Utilizado para especificar...}}
     "impropia": "italic(parts[1])",
-    # {{l|es|tamo}}
-    "l": "parts[-1]",
     # {{nombre científico}}
     "nombre científico": "superscript(tpl)",
     # {{plm}}
@@ -221,6 +126,8 @@ templates_multi = {
     "ucf": "capitalize(parts[1])",
     # {{variante obsoleta|hambre}}"
     "variante obsoleta": "f\"{italic('Variante obsoleta de')} {parts[1]}\"",
+    # {{versalita|xx}}
+    "versalita": "small_caps(parts[1])",
 }
 
 
@@ -244,38 +151,65 @@ def last_template_handler(
         '<i>(Arte, Arquitectura)</i>'
         >>> last_template_handler(["Botánica", "leng=es"], "es")
         '<i>(Botánica)</i>'
-        >>> last_template_handler(["etim", "la", "folia"], "es")
-        'del latín <i>folia</i>'
-
+        >>> last_template_handler(["deporte", "nota=fútbol"], "es")
+        '<i>(Deporte (fútbol))</i>'
+        >>> last_template_handler(["Fonética", "Fonética"], "es")
+        '<i>(Lingüística (fonética), Fonética)</i>'
+        >>> last_template_handler(["rur"], "es")
+        '<i>(Rural)</i>'
+        >>> last_template_handler(["rur", "deporte"], "es")
+        '<i>(Rural, Deporte)</i>'
+        >>> last_template_handler(["deporte", "rur"], "es")
+        '<i>(Deporte, rural)</i>'
+        >>> last_template_handler(["default"], "es")
+        '<i>(Default)</i>'
     """
-    from itertools import zip_longest
     from ...user_functions import (
         capitalize,
+        concat,
+        extract_keywords_from,
         italic,
         lookup_italic,
-        term,
     )
-    from .langs import langs
     from .template_handlers import render_template, lookup_template
+    from ..defaults import last_template_handler as default
 
     if lookup_template(template[0]):
         return render_template(template)
 
-    parts = [part for part in template[1:] if part.strip()]
+    if lookup_italic(template[0], locale, empty_default=True):
+        tpl, *parts = template
+        data = extract_keywords_from(parts)
+        phrase = ""
+        phrase_a: List[str] = []
+        parts.insert(0, tpl)
+        added = set()
+        append_to_last = False
+        for index, part in enumerate(parts, 1):
+            sindex = str(index) if index > 1 else ""
+            if part == ",":
+                continue
+            elif part in ("y", "e", "o", "u"):
+                phrase_a[-1] += f" {part} "
+                append_to_last = True
+                continue
+            elif part not in added:
+                local_phrase = lookup_italic(part, locale)
+                added.add(part)
+                if data["nota" + sindex]:
+                    local_phrase += f' ({data["nota"+sindex]})'
+            else:
+                local_phrase = part
+            if append_to_last:
+                phrase_a[-1] += local_phrase
+                append_to_last = False
+            else:
+                phrase_a.append(local_phrase)
+        if phrase_a:
+            phrase = italic(f'({capitalize(concat(phrase_a, ", "))})')
+        return phrase
 
-    if template[0] == "etim":
-        return f"del {langs.get(parts[0], parts[0])} {italic(parts[1])}"
-
-    res = ""
-    for word1, word2 in zip_longest(template, parts):
-        # Filter out "leng=" parts
-        if "leng=" in word1 or word1 in ("y", ","):
-            continue
-
-        res += capitalize(lookup_italic(word1, locale))
-        res += " y " if word2 == "y" else ", "
-
-    return term(res.rstrip(", "))
+    return default(template, locale, word)
 
 
 # Release content on GitHub

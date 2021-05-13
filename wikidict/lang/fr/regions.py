@@ -5,6 +5,7 @@ Auto-generated with `python -m scripts`.
 
 # START
 regions = {
+    "AAE": "Anglais afro-américain",
     "AD": "Andorre",
     "AE": "Émirats arabes unis",
     "AM": "Amérique latine",
@@ -84,6 +85,7 @@ regions = {
     "Centre du Viêt Nam": "Centre du Viêt Nam",
     "Champagne": "Champagne",
     "Champtocé": "Champtocé-sur-Loire",
+    "Charente-Maritime": "Charente-Maritime",
     "Charentes": "Charentes",
     "Chef-Boutonne": "Chef-Boutonne",
     "Chili": "Chili",
@@ -389,5 +391,5 @@ regions = {
     "Île-de-France": "Île-de-France",
     "Îles d’Aran": "Îles d'Aran",
     "Îles-de-la-Madeleine": "Îles-de-la-Madeleine",
-}  # 384
+}  # 386
 # END

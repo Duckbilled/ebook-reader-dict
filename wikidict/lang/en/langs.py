@@ -3228,6 +3228,7 @@ langs = {
     "inc-dar": "Dardic",
     "inc-dar-pro": "Proto-Dardic",
     "inc-eas": "Eastern Indo-Aryan",
+    "inc-elu": "Helu Prakrit",
     "inc-gup": "Gurjar Apabhramsa",
     "inc-hie": "Eastern Hindi",
     "inc-hiw": "Western Hindi",
@@ -3236,6 +3237,7 @@ langs = {
     "inc-kam": "Kamarupi Prakrit",
     "inc-kha": "Khasa Prakrit",
     "inc-kho": "Kholosi",
+    "inc-khs": "Khasa Prakrit",
     "inc-mas": "Middle Assamese",
     "inc-mbn": "Middle Bengali",
     "inc-mgd": "Magadhi Prakrit",
@@ -3516,6 +3518,7 @@ langs = {
     "juc": "Jurchen",
     "jud": "Worodougou",
     "juh": "Hone",
+    "jui": "Ngadjuri",
     "juk": "Wapan",
     "jul": "Jirel",
     "jum": "Jumjum",
@@ -9503,5 +9506,5 @@ langs = {
     "zyp": "Zyphe",
     "zza": "Zazaki",
     "zzj": "Zuojiang Zhuang",
-}  # 9,498
+}  # 9,501
 # END

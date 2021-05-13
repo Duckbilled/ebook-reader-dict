@@ -8,21 +8,20 @@ from wikidict.utils import process_templates
     "word, pronunciations, genre, etymology, definitions",
     [
         (
-            "konsentrasjon",
-            [],
+            "debolmente",
+            ["debolˈmente"],
             "",
-            ["Fra"],
+            ["composto dall'aggettivo debole e dal suffisso -mente"],
             [
-                "Det å konsentrere seg; ha stort fokus på noe.",
-                "<i>(Kjemi)</i> Andelen stoff i noe; mengde stoff løst pr. enhet.",
+                "in maniera debole, con debolezza",
             ],
         ),
     ],
 )
 def test_parse_word(word, pronunciations, genre, etymology, definitions, page):
     """Test the sections finder and definitions getter."""
-    code = page(word, "no")
-    details = parse_word(word, code, "no", force=True)
+    code = page(word, "it")
+    details = parse_word(word, code, "it", force=True)
     assert pronunciations == details.pronunciations
     assert genre == details.genre
     assert etymology == details.etymology
@@ -37,4 +36,4 @@ def test_parse_word(word, pronunciations, genre, etymology, definitions, page):
 )
 def test_process_templates(wikicode, expected):
     """Test templates handling."""
-    assert process_templates("foo", wikicode, "no") == expected
+    assert process_templates("foo", wikicode, "it") == expected
