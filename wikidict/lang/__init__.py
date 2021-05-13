@@ -7,6 +7,7 @@ from .en.langs import langs as EN
 from .es.langs import langs as ES
 from .fr.langs import langs as FR
 from .pt.langs import langs as PT
+from .no.langs import langs as NO
 
 # A list of all languages translated into different locales
 all_langs = {
@@ -15,6 +16,7 @@ all_langs = {
     "es": ES,
     "fr": FR,
     "pt": PT,
+    "no": NO,
 }
 
 # Regex to find the pronunciation
@@ -25,6 +27,7 @@ pronunciation = {
     "fr": re.compile(fr.pronunciation),
     "pt": re.compile(pt.pronunciation),
     "sv": re.compile(sv.pronunciation),
+    "no": re.compile(no.pronunciation),
 }
 
 # Regex to find the genre
@@ -35,6 +38,7 @@ genre = {
     "fr": re.compile(fr.genre),
     "pt": re.compile(pt.genre),
     "sv": re.compile(defaults.genre),
+    "no": re.compile(defaults.genre),
 }
 
 # Float number separator
@@ -45,6 +49,7 @@ float_separator = {
     "fr": fr.float_separator,
     "pt": pt.float_separator,
     "sv": sv.float_separator,
+    "no": no.float_separator,
 }
 
 # Thousads separator
@@ -55,6 +60,7 @@ thousands_separator = {
     "fr": fr.thousands_separator,
     "pt": pt.thousands_separator,
     "sv": sv.thousands_separator,
+    "no": no.thousands_separator,
 }
 
 # Markers for sections that contain interesting text to analyse.
@@ -65,6 +71,7 @@ section_patterns = {
     "fr": defaults.section_patterns,
     "pt": pt.section_patterns,
     "sv": defaults.section_patterns,
+    "no": defaults.section_patterns,
 }
 sublist_patterns = {
     "ca": defaults.sublist_patterns,
@@ -73,6 +80,7 @@ sublist_patterns = {
     "fr": defaults.sublist_patterns,
     "pt": defaults.sublist_patterns,
     "sv": defaults.sublist_patterns,
+    "no": defaults.sublist_patterns,
 }
 section_level = {
     "ca": defaults.section_level,
@@ -81,6 +89,7 @@ section_level = {
     "fr": defaults.section_level,
     "pt": pt.section_level,
     "sv": defaults.section_level,
+    "no": defaults.section_level,
 }
 section_sublevels = {
     "ca": defaults.section_sublevels,
@@ -89,6 +98,7 @@ section_sublevels = {
     "fr": defaults.section_sublevels,
     "pt": pt.section_sublevels,
     "sv": defaults.section_sublevels,
+    "no": defaults.section_sublevels,
 }
 head_sections = {
     "ca": ca.head_sections,
@@ -97,6 +107,7 @@ head_sections = {
     "fr": fr.head_sections,
     "pt": pt.head_sections,
     "sv": sv.head_sections,
+    "no": no.head_sections,
 }
 etyl_section = {
     "ca": ca.etyl_section,
@@ -105,6 +116,7 @@ etyl_section = {
     "fr": fr.etyl_section,
     "pt": pt.etyl_section,
     "sv": "",
+    "no": no.etyl_section,
 }
 sections = {
     "ca": ca.sections,
@@ -113,6 +125,7 @@ sections = {
     "fr": fr.sections,
     "pt": pt.sections,
     "sv": sv.sections,
+    "no": no.sections,
 }
 
 # Some definitions are not good to keep (plural, genre, ... )
@@ -123,6 +136,7 @@ definitions_to_ignore = {
     "fr": fr.definitions_to_ignore,
     "pt": pt.definitions_to_ignore,
     "sv": defaults.definitions_to_ignore,
+    "no": defaults.definitions_to_ignore,
 }
 
 # But some words need to be kept even if they would have been skipped by definitions_to_ignore
@@ -133,6 +147,7 @@ words_to_keep = {
     "fr": fr.words_to_keep,
     "pt": defaults.words_to_keep,
     "sv": defaults.words_to_keep,
+    "no": defaults.words_to_keep,
 }
 
 # The template name dealing with files in the Wikicode.
@@ -153,6 +168,7 @@ templates_ignored = {
     "fr": fr.templates_ignored,
     "pt": pt.templates_ignored,
     "sv": sv.templates_ignored,
+    "no": no.templates_ignored,
 }
 
 # Templates that will be completed/replaced using italic style.
@@ -167,6 +183,7 @@ templates_italic = {
     "fr": fr.templates_italic,
     "pt": pt.templates_italic,
     "sv": defaults.templates_italic,
+    "no": defaults.templates_italic,
 }
 
 # Templates more complex to manage. More work is needed.
@@ -192,6 +209,7 @@ templates_multi = {
     "fr": fr.templates_multi,
     "pt": pt.templates_multi,
     "sv": sv.templates_multi,
+    "no": no.templates_multi,
 }
 
 # Templates that will be completed/replaced using custom style.
@@ -202,6 +220,7 @@ templates_other = {
     "fr": fr.templates_other,
     "pt": defaults.templates_other,
     "sv": defaults.templates_other,
+    "no": defaults.templates_other,
 }
 
 # When a template is not handled by any previous template handlers,
@@ -213,6 +232,7 @@ last_template_handler = {
     "fr": fr.last_template_handler,
     "pt": pt.last_template_handler,
     "sv": sv.last_template_handler,
+    "no": no.last_template_handler,
 }
 
 # The full release description on GitHub:
@@ -224,6 +244,7 @@ release_description = {
     "fr": fr.release_description,
     "pt": pt.release_description,
     "sv": sv.release_description,
+    "no": no.release_description,
 }
 
 # Dictionary name that will be printed below each definition
@@ -234,4 +255,5 @@ wiktionary = {
     "fr": fr.wiktionary,
     "pt": pt.wiktionary,
     "sv": sv.wiktionary,
+    "no": no.wiktionary,
 }
